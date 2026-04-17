@@ -1,25 +1,28 @@
 # Depth Noise Diffusion
 
-This project implements a conditional Denoising Diffusion Probabilistic Model (DDPM) for generating depth camera noise. It provides a complete training pipeline for depth noise simulation in sim-to-real vision applications.
+[English](./readme.md) | [简体中文](./readme.zh-CN.md)
+
+![Training comparison](./comparison_from_train.png)
+
+This project implements a conditional Denoising Diffusion Probabilistic Model (DDPM) for generating depth camera noise, with a full training and sampling pipeline for sim-to-real depth noise simulation.
 
 ## Features
 
-- **Lightweight UNet Architecture**: Efficient model with 128→8 spatial resolution and channel progression [64,128,256,512]
-- **Conditional Generation**: Uses clean depth as conditioning input via channel concatenation
-- **Noise Prediction**: Epsilon prediction with MSE loss, T=1000 timesteps
-- **Data Processing**: Loads uint16 depth npy files, applies Gaussian filtering for pseudo-clean targets, computes residuals
-- **Augmentation**: Includes flip augmentations for small datasets
-- **Training Utilities**: Cosine LR scheduling, gradient clipping, automatic checkpoint saving
-- **Visualization**: Inference script with 4-column comparison plots and statistics
+- Lightweight conditional UNet + DDPM
+- Residual noise modeling (`raw - pseudo_clean`)
+- Supports larger effective batch size via gradient accumulation
+- Optional mixed precision training (`--mixed_precision`)
+- Auto checkpointing and config export (`config.json`)
+- Sampling and visualization with noise statistics
 
 ## Files
 
-- `model.py` — Lightweight conditional UNet + DDPM implementation
-- `dataset.py` — Depth noise dataset with preprocessing and augmentation
-- `train.py` — Training script with configurable hyperparameters
-- `train_v2.py` — Alternative training script (check differences)
-- `sample.py` — Inference and visualization script
-- `requirements.txt` — Python dependencies
+- `model.py` - Lightweight conditional UNet + DDPM implementation
+- `dataset.py` - Depth noise dataset preprocessing and augmentation
+- `train_v2.py` - Main training script (recommended)
+- `train_v1.py` - Legacy training script (kept for compatibility)
+- `sample.py` - Inference and visualization script
+- `requirements.txt` - Python dependencies
 
 ## Installation
 
@@ -29,33 +32,48 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Training
+### Training (main: `train_v2.py`)
 
 ```bash
-python -m depth_noise_diffusion.train \
+python -m depth_noise_diffusion.train_v2 \
     --data_dirs path/to/depth_data1 path/to/depth_data2 \
     --epochs 800 \
-    --batch_size 8 \
+    --batch_size 64 \
     --lr 2e-4 \
-    --save_dir runs/depth_noise_diffusion
+    --save_dir runs/depth_noise_v2
 ```
 
-### Inference
+Optional (memory/perf tuning):
+
+```bash
+python -m depth_noise_diffusion.train_v2 \
+    --data_dirs path/to/depth_data \
+    --batch_size 32 \
+    --grad_accumulate_steps 2 \
+    --mixed_precision
+```
+
+### Inference / Visualization
 
 ```bash
 python -m depth_noise_diffusion.sample \
-    --checkpoint runs/depth_noise_diffusion/best.pt \
+    --checkpoint runs/depth_noise_v2/best.pt \
     --data_dirs path/to/test_data \
     --n_samples 4 \
-    --out_dir runs/depth_noise_diffusion/vis
+    --out_dir runs/depth_noise_v2/vis
 ```
 
 ## Data Format
 
-- Input: uint16 numpy arrays (.npy files) containing depth images
-- Normalization: Divided by 65535.0 to [0,1] range
-- Pseudo-clean: Generated via Gaussian filtering (sigma=0.8)
-- Noise target: Residual between original and pseudo-clean
+- Input: `uint16` `.npy` depth images
+- Normalization: divide by `65535.0` to `[0, 1]`
+- Pseudo-clean target: Gaussian filter (`sigma=0.8`)
+- Noise target: residual between raw depth and pseudo-clean depth
+
+## Notes
+
+- `train_v2.py` is the default and actively used training script.
+- `train_v1.py` is an older baseline version retained for reference.
 
 ## License
 
