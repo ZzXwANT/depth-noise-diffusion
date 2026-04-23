@@ -2,7 +2,12 @@
 
 [English](./readme.md) | [简体中文](./readme.zh-CN.md)
 
-![Training comparison](./comparison_from_train.png)
+| Real depth inference | Sim depth inference (as `clean_depth`) |
+| :--: | :--: |
+| <img src="./assets/real_depth_inference.png" width="420" alt="Real depth inference result"> | <img src="./assets/sim_clean_depth_inference.png" width="420" alt="Sim clean-depth inference result"> |
+
+- Real depth inference: use real depth `.npy`, build `pseudo_clean` with Gaussian filtering, then compare generated residual noise with the real residual.
+- Sim depth inference: extract 4 frames from `sim_seed0.mp4`, convert them to `128x128 uint16` depth `.npy`, and use them directly as the `clean_depth` condition.
 
 This project implements a conditional Denoising Diffusion Probabilistic Model (DDPM) for generating depth camera noise, with a full training and sampling pipeline for sim-to-real depth noise simulation.
 
@@ -22,6 +27,7 @@ This project implements a conditional Denoising Diffusion Probabilistic Model (D
 - `train_v2.py` - Main training script (recommended)
 - `train_v1.py` - Legacy training script (kept for compatibility)
 - `sample.py` - Inference and visualization script
+- `assets/` - README images and inference result examples
 - `requirements.txt` - Python dependencies
 
 ## Installation
@@ -77,4 +83,4 @@ python -m depth_noise_diffusion.sample \
 
 ## License
 
-[Add your license here]
+This project is released under the [MIT License](../LICENSE).

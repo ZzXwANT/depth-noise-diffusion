@@ -2,7 +2,12 @@
 
 [English](./readme.md) | [简体中文](./readme.zh-CN.md)
 
-![训练对比图](./comparison_from_train.png)
+| 实际深度图推理 | 仿真深度图推理（作为 `clean_depth`） |
+| :--: | :--: |
+| <img src="./assets/real_depth_inference.png" width="420" alt="实际深度图推理结果"> | <img src="./assets/sim_clean_depth_inference.png" width="420" alt="仿真深度图推理结果"> |
+
+- 实际深度图推理：使用真实深度 `.npy`，先通过高斯滤波得到 `pseudo_clean`，再生成噪声残差并与真实残差对比。
+- 仿真深度图推理：从 `sim_seed0.mp4` 抽取 4 帧，转换为 `128x128 uint16` 深度 `.npy`，直接作为 `clean_depth` 条件输入生成噪声。
 
 本项目实现了用于深度相机噪声生成的条件扩散模型（DDPM），提供了完整的 sim2real 深度噪声训练与采样流程。
 
@@ -22,6 +27,7 @@
 - `train_v2.py` - 主训练脚本（推荐）
 - `train_v1.py` - 旧版训练脚本（兼容保留）
 - `sample.py` - 推理与可视化脚本
+- `assets/` - README 展示图与推理结果示例
 - `requirements.txt` - Python 依赖
 
 ## 安装
@@ -77,4 +83,4 @@ python -m depth_noise_diffusion.sample \
 
 ## 许可证
 
-[在此补充许可证]
+本项目采用 [MIT License](../LICENSE) 开源协议。
