@@ -4,7 +4,7 @@
 
 | Real depth inference | Sim depth inference (as `clean_depth`) |
 | :--: | :--: |
-| <img src="./assets/real_depth_inference.png" width="420" alt="Real depth inference result"> | <img src="./assets/sim_clean_depth_inference.png" width="420" alt="Sim clean-depth inference result"> |
+| <img src="./assets/real_depth_inference_preview.png" width="420" alt="Real depth inference result"> | <img src="./assets/sim_clean_depth_inference_preview.png" width="420" alt="Sim clean-depth inference result"> |
 
 - Real depth inference: use real depth `.npy`, build `pseudo_clean` with Gaussian filtering, then compare generated residual noise with the real residual.
 - Sim depth inference: extract 4 frames from `sim_seed0.mp4`, convert them to `128x128 uint16` depth `.npy`, and use them directly as the `clean_depth` condition.
