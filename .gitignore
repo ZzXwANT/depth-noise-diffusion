@@ -114,7 +114,6 @@ dmypy.json
 .pyre/
 
 # Project specific
-runs/
 *.pt
 *.pth
 checkpoints/
