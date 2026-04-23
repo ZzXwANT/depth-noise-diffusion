@@ -4,7 +4,7 @@
 
 | 实际深度图推理 | 仿真深度图推理（作为 `clean_depth`） |
 | :--: | :--: |
-| <img src="./assets/real_depth_inference_preview.png" width="420" alt="实际深度图推理结果"> | <img src="./assets/sim_clean_depth_inference_preview.png" width="420" alt="仿真深度图推理结果"> |
+| <img src="./assets/real_depth_inference_fit.png" width="420" alt="实际深度图推理结果"> | <img src="./assets/sim_clean_depth_inference_fit.png" width="420" alt="仿真深度图推理结果"> |
 
 - 实际深度图推理：使用真实深度 `.npy`，先通过高斯滤波得到 `pseudo_clean`，再生成噪声残差并与真实残差对比。
 - 仿真深度图推理：从 `sim_seed0.mp4` 抽取 4 帧，转换为 `128x128 uint16` 深度 `.npy`，直接作为 `clean_depth` 条件输入生成噪声。
