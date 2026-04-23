@@ -114,7 +114,7 @@ dmypy.json
 .pyre/
 
 # Project specific
-*.pt
+# *.pt
 *.pth
 checkpoints/
 logs/
