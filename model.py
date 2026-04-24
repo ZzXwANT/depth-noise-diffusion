@@ -2,7 +2,7 @@
 Lightweight conditional DDPM for depth-camera noise generation.
 
 Architecture:
-  - Small UNet (128→8 spatial, channels [64,128,256,512])
+  - Small UNet (128→16 spatial, channels [64,128,256,512])
   - Condition: clean depth concatenated at input (2ch)
   - Time embedding: sinusoidal + MLP
   - Predicts epsilon (noise) with MSE loss
@@ -45,7 +45,6 @@ class TimeMLPEmb(nn.Module):
 
 
 # ── UNet blocks ─────────────────────────────────────────────────────────────
-
 
 class ResBlock(nn.Module):
     def __init__(self, in_ch: int, out_ch: int, time_dim: int):
