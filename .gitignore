@@ -120,3 +120,4 @@ checkpoints/
 logs/
 tensorboard/
 wandb/
+depth_dataset/
